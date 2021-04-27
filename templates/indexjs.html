@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>Speech-To-Text-Converter</title>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.1/css/font-awesome.min.css" />
+		
+		 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+   <body>
+   	
+     <h1>Speech Recognition</h1>
+
+  <h2 style="color: #97869F;">Converting Speech Input To Text</h2>
+
+		<div id="result" >
+			<br>
+		 <label style="font-size: 15px; color: black">Speech Input:</label>
+      <form action = "/resultjs" method = "POST">
+        <input type="text" id="result1" size="40" maxlength=100 name = "Name" /></br>
+<br>
+        <button type = "button" style="position:absolute; left:4%;" onclick="startConverting();"><i class="fa fa-microphone"></i></button>
+		<!-- click this button to stop converting-->
+		<button type = "button" style="position:absolute; left:7%;" onclick="stopConverting();"><i class="fa fa-remove"></i></button>
+	</br>
+         <p><input type = "submit" value = "submit" style="margin-top:2%" /></p>
+      </form>
+      
+		<script type="text/javascript">
+		
+		var overlay = document.getElementById("overlay");
+		
+		
+			var r = document.getElementById('result1');
+			var speechRecognizer = new webkitSpeechRecognition();// a new speech recognition object
+			
+			//function to start listening to voice and then convert it to text
+			function startConverting () {
+				if('webkitSpeechRecognition' in window){
+					
+					speechRecognizer.continuous = true;
+					speechRecognizer.interimResults = true;
+					speechRecognizer.lang = 'en-IN';
+					speechRecognizer.start();
+					var finalTranscripts = '';
+					speechRecognizer.onresult = function(event){
+						var interimTranscripts = '';
+						for(var i = event.resultIndex; i < event.results.length; i++){
+							var transcript = event.results[i][0].transcript;
+							transcript.replace("\n", "<br>");
+							if(event.results[i].isFinal){
+								finalTranscripts += transcript;
+							}else{
+								interimTranscripts += transcript;
+							}
+						}
+						r.value = finalTranscripts + interimTranscripts ;
+					};
+					speechRecognizer.onerror = function (event) {
+					};
+				}else{
+					r.innerHTML = 'No browser support. Please upgrade your browser';
+				}
+			}
+			//function to stop listening
+			function stopConverting()
+			{
+				speechRecognizer.stop();
+			}
+		
+		</script>
+		<br>
+    </br>
+    <p style="text-align: center; color: #ea5703"></p>
+   </body>
+</html>
