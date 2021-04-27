@@ -14,12 +14,13 @@
     <form method="post" enctype="multipart/form-data">
         <input type="file" name="file"/>
         <br>
-        <input type="submit" id="submitButton" value="Transcribe"/>
+        
+        <button style="padding-left:2%;padding-right: 2% " type="submit" id="submitButton"/>Transcribe</button>
     </form>
 
     {% if transcript != "" %}
         <div id="speechTranscriptContainer">
-            <h1 style="background-color: #ed341d;">Transcript</h1>
+            <h1>Transcript</h1>
             <p id="speechText">{{ transcript }}</p>
         </div>
     {% endif %}
